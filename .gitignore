@@ -1,0 +1,71 @@
+# ----------------------------------------
+# Logs and Temporary Files
+# ----------------------------------------
+*.log
+*.tmp
+*.bak
+*.swp
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+debug.log
+
+# ----------------------------------------
+# Node.js & React (Frontend & Backend)
+# ----------------------------------------
+node_modules/
+dist/
+build/
+.cache/
+.next/
+out/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Ignore lock files optionally (if using single package manager globally)
+# yarn.lock
+# package-lock.json
+# pnpm-lock.yaml
+
+# ----------------------------------------
+# Spring Boot / Java / Maven / Gradle
+# ----------------------------------------
+target/
+build/
+*.class
+*.jar
+*.war
+*.ear
+
+# IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# VS Code
+.vscode/
+
+# ----------------------------------------
+# Docker and Environment
+# ----------------------------------------
+.env
+docker-compose.override.yml
+*.env.*.backup
+*.override.env
+
+# ----------------------------------------
+# System-specific
+# ----------------------------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------------------------
+# Git Subfolders You Might Intend to Ignore
+# ----------------------------------------
+config-server-repo/

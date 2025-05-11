@@ -1,0 +1,25 @@
+server:
+  port: 8761 # Port for the Eureka Server.
+
+eureka:
+  client:
+    register-with-eureka: false # This application is the server; it doesn't register itself.
+    fetch-registry: false # This application doesn't fetch registry info from itself.
+  server:
+    enable-self-preservation: false # Disable self-preservation for testing purposes.
+    eviction-interval-timer-in-ms: 5000 # Frequency of eviction tasks (removing stale instances).
+    wait-time-in-ms-when-sync-empty: 0 # Reduces startup time for an empty registry.
+
+spring:
+  application:
+    name: eureka-server
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # Expose all actuator endpoints for testing.
+
+logging:
+  level:
+    com.netflix.eureka: DEBUG # Enable detailed logs for Eureka operations.

@@ -1,0 +1,10 @@
+# The bootstrap file is used to download configurations from the Config Server before the application starts.
+spring:
+  application:
+    name: order-service  # Service name used by Config Server to locate its properties
+  cloud:
+    config:
+      uri: http://localhost:8080  # URI of the Config Server where configurations are fetched
+      fail-fast: true  # Ensures the application fails if Config Server is unavailable
+      profile: default  # Specifies the profile to load from the Config Server (e.g., default, dev, prod)
+

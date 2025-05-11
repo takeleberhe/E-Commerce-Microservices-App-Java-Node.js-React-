@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: payment-service
+  cloud:
+    config:
+      import: "optional:configserver:" # Make Config Server optional
+      uri: http://localhost:8080 # URL of the Config Server

@@ -1,0 +1,20 @@
+server:
+  port: 8084 # Port number for the auth-service
+
+spring:
+  datasource:
+    url: ${DATABASE_URL}  # Database URL
+    username: ${DATABASE_USERNAME}  # Database username
+    password: ${DATABASE_PASSWORD}  # Database password
+    driver-class-name: org.postgresql.Driver  # PostgreSQL driver
+  jpa:
+    hibernate:
+      ddl-auto: update  # Automatically update database schema
+    show-sql: true  # Show SQL queries in the logs
+
+eureka:
+  instance:
+    prefer-ip-address: true  # Prefer IP address over hostname
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/  # Eureka server URL

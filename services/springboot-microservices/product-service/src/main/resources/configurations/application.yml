@@ -1,0 +1,45 @@
+server:
+  port: 8089  # Port for the Product Microservice
+
+spring:
+  application:
+    name: product-service  # Name of the microservice
+  profiles:
+    active: dev  # Set the active profile (e.g., dev, prod)
+  debug: true  # Enable detailed debugging during development (remove in production)
+
+  # Database configuration for dev (using environment variables from .env file)
+  datasource:
+    url: ${DATABASE_URL}  # Database URL from .env file
+    username: ${DATABASE_USERNAME}  # Database username from .env file
+    password: ${DATABASE_PASSWORD}  # Database password from .env file
+    driver-class-name: org.postgresql.Driver  # JDBC driver for PostgreSQL
+
+  # JPA configuration
+  jpa:
+    hibernate:
+      ddl-auto: update  # Automatically update the database schema (use cautiously in production)
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL-specific Hibernate dialect
+    show-sql: true  # Enable SQL query logging for debugging (remove in production)
+
+  # Eureka configuration
+  eureka:
+    client:
+      service-url:
+        defaultZone: http://localhost:8761/eureka/  # Eureka Server URL for service discovery
+      fetch-registry: true  # Enable fetching the registry from Eureka Server
+      register-with-eureka: true  # Enable registering this service with Eureka
+
+# Springdoc OpenAPI Configuration
+springdoc:
+  api-docs:
+    title: Product Service API  # Title of the API
+    description: API documentation for managing products  # Description of the API
+    version: 1.0.0  # Version of the API
+    path: /v3/api-docs  # Path to access the generated OpenAPI documentation
+  swagger-ui:
+    enabled: true  # Enable Swagger UI
+    path: /swagger-ui  # Path to access the Swagger UI
+    config-url: /v3/api-docs  # URL to fetch the OpenAPI documentation for Swagger UI

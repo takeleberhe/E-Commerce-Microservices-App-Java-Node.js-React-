@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: product-service # Name of the microservice; unique for Eureka and Config Server.
+  cloud:
+    config:
+      uri: http://localhost:8080 # URL of the Config Server.
+      profile: default # Profile to load from the Config Server (e.g., dev, prod).
+      label: main # Git branch for Config Server repository.

@@ -1,0 +1,195 @@
+version: '3.8'
+
+services:
+  # Config Server
+  config-server:
+    build:
+      context: ./config-server
+      dockerfile: Dockerfile
+    container_name: config-server
+    ports:
+      - "8080:8080"
+    command: >
+      sh -c "mvn clean package && java -jar target/config-server-0.0.1-SNAPSHOT.jar"
+
+  # Eureka Server
+  eureka-server:
+    build:
+      context: ./eureka-server
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    depends_on:
+      - config-server
+    command: >
+      sh -c "mvn clean package && java -jar target/eureka-server-0.0.1-SNAPSHOT.jar"
+
+  # Spring Boot Product Service
+  product-service:
+    build:
+      context: ./services/spring-boot-microservices/product-service
+      dockerfile: Dockerfile
+    container_name: product-service
+    ports:
+      - "8089:8089"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_REDIS_HOST=redis # Added Redis environment variable
+    command: >
+      sh -c "mvn clean package && java -jar target/product-service-0.0.1-SNAPSHOT.jar"
+    depends_on:
+      - config-server
+      - eureka-server
+      - redis
+
+  # Spring Boot Order Service
+  order-service:
+    build:
+      context: ./services/spring-boot-microservices/order-service
+      dockerfile: Dockerfile
+    container_name: order-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_REDIS_HOST=redis # Added Redis environment variable
+    command: >
+      sh -c "mvn clean package && java -jar target/order-service-0.0.1-SNAPSHOT.jar"
+    depends_on:
+      - config-server
+      - eureka-server
+      - product-service
+      - redis
+
+  # Node.js Notification Service
+  notification-service:
+    build:
+      context: ./services/nodejs-microservice/notification-service
+      dockerfile: Dockerfile
+    container_name: notification-service
+    ports:
+      - "5000:5000"
+    depends_on:
+      - kafka
+      - redis # Added Redis dependency
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./api-gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8085:8085"
+    depends_on:
+      - eureka-server
+    command: >
+      sh -c "mvn clean package && java -jar target/api-gateway-0.0.1-SNAPSHOT.jar"
+
+  # Auth Service
+  auth-service:
+    build:
+      context: ./services/spring-boot-microservices/auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_REDIS_HOST=redis # Added Redis environment variable
+    command: >
+      sh -c "mvn clean package && java -jar target/auth-service-0.0.1-SNAPSHOT.jar"
+    depends_on:
+      - config-server
+      - eureka-server
+      - redis
+
+  # Kafka
+  kafka:
+    image: bitnami/kafka:latest
+    container_name: kafka
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+
+  # Zookeeper
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379" # Redis default port
+    volumes:
+      - redis-data:/data # Persistent Redis storage
+
+  # Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  # Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./monitoring/grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+
+  # Zipkin
+  zipkin:
+    image: openzipkin/zipkin:latest
+    container_name: zipkin
+    ports:
+      - "9411:9411"
+
+  # Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.9.2 # Updated to a valid version
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node # Run Elasticsearch in single-node mode
+    ports:
+      - "9200:9200" # Elasticsearch HTTP port
+      - "9300:9300" # Elasticsearch transport port
+
+  # Logstash
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.9.2 # Updated to a valid version
+    container_name: logstash
+    ports:
+      - "5044:5044" # Logstash beats input port
+    depends_on:
+      - elasticsearch
+    volumes:
+      - ./elk/logstash/pipeline:/usr/share/logstash/pipeline # Logstash pipeline configuration
+
+  # Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.9.2 # Updated to a valid version
+    container_name: kibana
+    ports:
+      - "5601:5601" # Kibana web interface
+    depends_on:
+      - elasticsearch
+
+volumes:
+  redis-data: # Named volume for Redis persistent data

@@ -1,0 +1,29 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Microservices Dashboard",
+    "panels": [
+      {
+        "type": "graph",
+        "title": "Request Latency",
+        "targets": [
+          {
+            "expr": "http_server_requests_seconds_sum{job='spring-boot-services'}",
+            "legendFormat": "{{method}} {{uri}}",
+            "refId": "A"
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "title": "Error Counts",
+        "targets": [
+          {
+            "expr": "sum(rate(http_server_requests_seconds_count{status!~'2..'}[5m])) by (status)",
+            "refId": "B"
+          }
+        ]
+      }
+    ]
+  }
+}

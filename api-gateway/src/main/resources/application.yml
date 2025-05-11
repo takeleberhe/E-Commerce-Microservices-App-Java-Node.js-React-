@@ -1,0 +1,53 @@
+server:
+  port: 8085 # Port for the API Gateway
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # Enable Eureka integration for dynamic service discovery
+          lower-case-service-id: true
+      # Global Filters for Rate Limiting and Throttling
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10  # Rate at which tokens are replenished
+            redis-rate-limiter.burstCapacity: 20  # Max tokens allowed before throttling
+            redis-rate-limiter.requestedTokens: 1 # Number of tokens needed per request
+
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/product/**
+          filters:
+            - StripPrefix=1
+
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/order/**
+          filters:
+            - StripPrefix=1
+
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/payment/**
+          filters:
+            - StripPrefix=1
+
+  redis:
+    host: localhost
+    port: 6379 # Redis port for rate limiting
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true

@@ -1,0 +1,67 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: order-service
+
+  profiles:
+    active: prod  # Ensure proper use of profiles for different environments
+
+  cloud:
+    config:
+      enabled: true
+      fail-fast: true  # In production, fail fast if config server is unavailable
+
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate  # Use validate or none in production to avoid schema modifications
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false  # Disable SQL logs in production for performance and security
+
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9093}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      group-id: order-service-group
+      auto-offset-reset: earliest
+    listener:
+      missing-topics-fatal: false  # Prevent startup failure if topics are missing
+    properties:
+      security.protocol: PLAINTEXT  #  Update to SSL or SASL_SSL in secured environments
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka/  # Use Docker hostname or internal service name
+    fetch-registry: true
+    register-with-eureka: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus  #  Expose only essential endpoints in production
+  endpoint:
+    health:
+      show-details: never
+  metrics:
+    export:
+      prometheus:
+        enabled: true  # Enable Prometheus metrics if used
+
+logging:
+  level:
+    root: INFO
+    org.springframework.kafka: WARN  #  Set Kafka logs to WARN or INFO in prod
+    org.hibernate.SQL: WARN
+    org.hibernate.type.descriptor.sql.BasicBinder: WARN

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: AuthService
+  config:
+    import: configserver:http://localhost:8080 # URL of the Config Server
+    fail-fast: true # Fail immediately if the Config Server is unavailable
+    retry:
+      max-attempts: 3
+      initial-interval: 1000
+      max-interval: 2000

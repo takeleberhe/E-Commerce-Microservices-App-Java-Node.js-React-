@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: api-gateway # Service name must match the file name in Config Server (api-gateway-service.yml)
+  cloud:
+    config:
+      uri: http://localhost:8080 # URL of the Config Server
+      fail-fast: true # Fail fast if Config Server is not reachable
+  profiles:
+    active: dev # Active profile

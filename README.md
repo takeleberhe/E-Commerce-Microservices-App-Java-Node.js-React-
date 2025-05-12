@@ -1,17 +1,19 @@
-E-Commerce Microservice Project
-🚀 Overview
+🛒 E-Commerce Microservices Application
+📝 Overview
+This is a full-stack, containerized e-commerce application built using a microservices architecture. The backend is composed of Spring Boot (Java) and Express.js (Node.js) microservices, while the frontend is developed using React.js and styled with Tailwind CSS.
 
-This is a full-stack, containerized e-commerce application built using microservices architecture. The backend consists of Spring Boot (Java) and Express.js (Node.js) microservices. The frontend is developed using React.js and styled with Tailwind CSS.
+The platform supports secure user authentication, product management, order processing, and integrated payment gateways (Stripe & PayPal). Kafka handles asynchronous messaging between services, Eureka enables service discovery, and Spring Cloud Config Server centralizes configuration management. All services are containerized and orchestrated using Docker Compose.
 
-The application supports Stripe and PayPal for payment processing, uses Kafka for asynchronous messaging, includes service discovery via Eureka, and uses Spring Cloud Config Server for centralized configuration management. Spring Cloud Gateway is used as an API Gateway for routing requests to individual services, load balancing, and handling security concerns across all microservices.
+🚀 Tech Stack
+Front-end:
+React.js (UI framework)
 
-All services run in Docker containers managed with Docker Compose.
+Tailwind CSS (Styling)
 
-🧩 Key Features
+Stripe & PayPal SDKs (Payment integration)
 
-🛠️ Backend Microservices
-
-Spring Boot Microservices:
+Back-end:
+Spring Boot (Java-based services)
 
 Product Service
 
@@ -19,264 +21,200 @@ Order Service
 
 Authentication Service
 
-Payment Service (Supports Stripe & PayPal)
+Payment Service
 
-Node.js (Express.js) Microservices:
+Express.js (Node.js-based services)
 
 Shipping Service
 
 Notification Service
 
+Infrastructure:
+PostgreSQL (Relational database)
+
+MongoDB (NoSQL database)
+
+Apache Kafka (Message broker)
+
+Eureka Server (Service discovery)
+
+Spring Cloud Gateway (API Gateway)
+
+Spring Cloud Config Server (Centralized configuration)
+
+Docker & Docker Compose (Containerization)
+
+Swagger/OpenAPI (API documentation)
+
+🎯 Features
+🧩 Microservices
+Spring Boot:
+🛍 Product Service: Manage products
+
+📦 Order Service: Handle order placement and status
+
+🛡 Authentication Service: JWT-based user auth
+
+💳 Payment Service: Stripe & PayPal integration
+
+Node.js:
+🚚 Shipping Service: Shipment and delivery management
+
+📧 Notification Service: Email/SMS notifications
+
 🎨 Frontend
-Built with React.js and styled using Tailwind CSS
+Product listing & shopping cart
 
-Integrated Stripe and PayPal SDKs for secure payments
+User login & registration
 
-User registration, login, product listing, cart, and order flow
+Checkout process with Stripe/PayPal
 
-🗃️ Database
-PostgreSQL (Dockerized)
+Responsive design with Tailwind CSS
 
-MongoDB (Dockerized)
+📦 Messaging & Orchestration
+Kafka-based asynchronous communication between services
 
-🔍 Service Discovery
+Docker Compose for orchestrating containers
 
-Eureka Server for microservice registration and discovery
+🔍 Service Discovery & API Gateway
+Eureka for dynamic service registration and discovery
 
-📑 API Documentation
+Spring Cloud Gateway for secure routing and load balancing
 
-Swagger UI for each backend service using Springdoc OpenAPI
-
-📦 Asynchronous Messaging
-
-Apache Kafka for inter-service communication
-
-🐳 Containerization
-
-Fully containerized using Docker
-
-Docker Compose for orchestration
-
-🧰 Tech Stack
-
-Frontend: React.js, Tailwind CSS
-
-Backend:
-
-Spring Boot (Java)
-
-Express.js (Node.js)
-
-Database: PostgreSQL, MongoDB
-
-Messaging: Kafka
-
-Service Discovery: Eureka
-
-Payments: Stripe SDK, PayPal REST API
-
-Containerization: Docker, Docker Compose
-
-Documentation: Swagger (OpenAPI)
-
-✅ Prerequisites
-
-Ensure you have the following installed:
-
-Docker
-
-Docker Compose
-
-Node.js
-
-Java 17
-
-🛠️ Setup & Run Instructions
-
-Clone the Repository
-
+🛠 Installation & Setup
+1️⃣ Clone the Repository
 bash
 Copy
 Edit
 git clone https://github.com/your-username/ecommerce-microservices.git
-
 cd ecommerce-microservices
-
-Create .env Files
-
-Create .env files for each microservice needing environment variables (e.g., DB credentials, Stripe, PayPal keys):
-
-Example for payment-service/.env:
+2️⃣ Create .env Files
+Create .env files for each microservice that needs secrets or credentials. Example (payment-service/.env):
 
 env
 Copy
 Edit
-
 DATABASE_URL=jdbc:postgresql://localhost:5432/paymentdb
-
 DATABASE_USERNAME=your_db_username
-
 DATABASE_PASSWORD=your_db_password
 
 # Stripe
-
 STRIPE_SECRET_KEY=your_stripe_secret_key
-
 STRIPE_PUBLIC_KEY=your_stripe_public_key
 
 # PayPal
-
 PAYPAL_CLIENT_ID=your_paypal_client_id
-
 PAYPAL_CLIENT_SECRET=your_paypal_client_secret
-
 PAYPAL_MODE=sandbox
+⚠️ Make sure .env files are included in .gitignore. Never expose secrets publicly.
 
-🔒 Don't forget to add .env files to .gitignore.
+3️⃣ Configure Docker Compose
+Ensure that docker-compose.yml includes all services:
 
-Configure Docker Compose
+Frontend
 
-Ensure that docker-compose.yml exists in the root directory and includes all services (frontend, backend, Kafka, Eureka, DB, Config Server, API Gateway, etc.).
+Backend microservices
 
-Run the App
+Kafka
 
+Eureka Server
+
+Config Server
+
+API Gateway
+
+PostgreSQL & MongoDB
+
+4️⃣ Run the Application
 bash
 Copy
 Edit
-
 docker-compose up --build
-
-🌐 Accessing the Application
-
+🌐 Access the Application
 🔗 API Gateway
-
-All backend services are accessible through the API Gateway:
-
+arduino
+Copy
+Edit
 URL: http://localhost:8085
-
 Microservice	Route
-
 Product Service	/products
-
 Order Service	/orders
-
 Payment Service	/payments
-
 Authentication	/auth
-
-Shipping	/shipping
-
-Notification	/notifications
+Shipping Service	/shipping
+Notification Service	/notifications
 
 📚 Swagger UI
+Service	URL
+Product Service	http://localhost:8089/swagger-ui
+Order Service	http://localhost:8083/swagger-ui
+Payment Service	http://localhost:8081/swagger-ui
 
-Microservice	Swagger URL
+🛍 Frontend UI
+arduino
+Copy
+Edit
+URL: http://localhost:5173/
+User-friendly shopping experience
 
-Product Service	localhost:8089/swagger-ui
+Login, registration, and cart functionality
 
-Order Service	localhost:8083/swagger-ui
-
-Payment Service	localhost:8081/swagger-ui
-
-🎨 Frontend UI
-
-URL: http://localhost:3001
-
-Integrated Stripe & PayPal SDKs
+Checkout with Stripe or PayPal
 
 Fully responsive design
 
-Includes checkout, and user auth
-
 💳 Payment Integration
+Backend (Java - payment-service)
+Supports Stripe and PayPal Developer APIs
 
-The app supports Stripe and PayPal:
+Secure payment logic implemented in isolated microservice
 
-Backend (Java):
+Frontend (React)
+Stripe: @stripe/react-stripe-js, @stripe/stripe-js
 
-Uses Stripe AND PayPal Developer API
+PayPal: PayPal JS SDK with hosted buttons
 
-Payment logic is implemented in the payment-service.
+💡 Users can choose either Stripe or PayPal during checkout.
 
-Frontend (React):
+🐳 Docker & Orchestration
+All services are containerized using Docker and orchestrated via Docker Compose.
 
-Stripe: Uses @stripe/react-stripe-js and @stripe/stripe-js for secure card collection and tokenization.
-
-
-PayPal: Uses PayPal JS SDK to render PayPal buttons and handle payments.
-
-
-You can choose either method during checkout.
-
-
-🐳 Containerization with Docker & Docker Compose
-
-This project uses Docker for containerization and Docker Compose for orchestration.
-
-📦 Docker Commands
-
-Start all services:
-
+Common Docker Commands:
 bash
-
 Copy
 Edit
-
+# Start services
 docker-compose up --build
 
-Stop all services:
+# Stop services
+docker-compose down
 
-bash
-Copy
-Edit
-
-docker-compose 
-
-View logs:
-
-bash
-Copy
-Edit
-
+# View logs
 docker-compose logs
-
-🛠️ Troubleshooting
-
-Check that all .env files are correctly configured.
-
-Ensure PostgreSQL and Kafka are healthy in Docker.
-
-If Swagger UI doesn't load, verify the microservice is running.
-
-🔐 API Gateway & Centralized Configuration
-
+🔐 Configuration & API Gateway
 Spring Cloud Config Server
+Centralized .yml and .properties management
 
-The Spring Cloud Config Server is used to centralize the configuration of all microservices, making it easier to manage application properties, database credentials, and other configurations. It allows for:
+Supports Git and native file storage
 
-Centralized management of configuration properties across microservices
-
-Easy updates to configurations without redeploying individual services
-
-Support for various backends like Git, JDBC, or native property files
+Enables dynamic config refresh for all services
 
 Spring Cloud Gateway
+Routes all requests to respective microservices
 
-Spring Cloud Gateway acts as an API Gateway for routing requests to different services. Its key benefits are:
+Integrated with Eureka for dynamic load balancing
 
-Centralized Routing: It provides a unified entry point for accessing backend services, reducing complexity for clients.
+Central place for applying:
 
-Load Balancing: Integrated with Eureka, Spring Cloud Gateway can distribute incoming requests across multiple instances of a service to improve scalability and reliability.
+Authentication and Authorization
 
-Security: With Spring Cloud Gateway, security can be centralized, applying authentication and authorization policies uniformly to all microservices.
+Rate Limiting & Throttling
 
-Rate Limiting: You can implement throttling and rate-limiting at the API Gateway level to protect backend services from excessive load.
-
-Resiliency: It integrates with Spring Cloud Circuit Breaker to provide fault tolerance, ensuring that failures in one service do not impact the entire application.
+Circuit Breakers for fault tolerance
 
 🤝 Contributing
+Contributions are welcome!
+Feel free to fork this repo, make changes, and submit a pull request.
 
-Contributions are welcome! Fork the repo, make your changes, and submit a PR.
-
-📄 License
+📜 License
 This project is licensed under the MIT License. See the LICENSE file for details.

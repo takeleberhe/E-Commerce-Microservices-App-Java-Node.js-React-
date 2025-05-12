@@ -101,6 +101,7 @@ bash:
 
 
 git clone https://github.com/takeleberhe/E-Commerce-Microservices-App-Java-Node.js-React-.git
+
 cd ecommerce-microservices
 
 2️⃣ Create .env Files
@@ -151,6 +152,7 @@ API Gateway
 PostgreSQL & MongoDB
 
 4️⃣ Run the Application
+
 bash:
 
 
@@ -218,6 +220,7 @@ PayPal: PayPal JS SDK with hosted buttons
 All services are containerized using Docker and orchestrated via Docker Compose.
 
 Common Docker Commands:
+
 bash:
 
 # Start services

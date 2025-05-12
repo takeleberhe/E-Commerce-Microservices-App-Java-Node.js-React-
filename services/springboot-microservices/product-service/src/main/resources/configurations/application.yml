@@ -1,45 +1,46 @@
 server:
-  port: 8089  # Port for the Product Microservice
+  port: 8089
 
 spring:
   application:
-    name: product-service  # Name of the microservice
+    name: product-service
   profiles:
-    active: dev  # Set the active profile (e.g., dev, prod)
-  debug: true  # Enable detailed debugging during development (remove in production)
+    active: dev
+  debug: false
 
-  # Database configuration for dev (using environment variables from .env file)
   datasource:
-    url: ${DATABASE_URL}  # Database URL from .env file
-    username: ${DATABASE_USERNAME}  # Database username from .env file
-    password: ${DATABASE_PASSWORD}  # Database password from .env file
-    driver-class-name: org.postgresql.Driver  # JDBC driver for PostgreSQL
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
-  # JPA configuration
   jpa:
     hibernate:
-      ddl-auto: update  # Automatically update the database schema (use cautiously in production)
+      ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect  # PostgreSQL-specific Hibernate dialect
-    show-sql: true  # Enable SQL query logging for debugging (remove in production)
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
 
-  # Eureka configuration
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
   eureka:
     client:
       service-url:
-        defaultZone: http://localhost:8761/eureka/  # Eureka Server URL for service discovery
-      fetch-registry: true  # Enable fetching the registry from Eureka Server
-      register-with-eureka: true  # Enable registering this service with Eureka
+        defaultZone: http://localhost:8761/eureka/
+      fetch-registry: true
+      register-with-eureka: true
 
-# Springdoc OpenAPI Configuration
 springdoc:
   api-docs:
-    title: Product Service API  # Title of the API
-    description: API documentation for managing products  # Description of the API
-    version: 1.0.0  # Version of the API
-    path: /v3/api-docs  # Path to access the generated OpenAPI documentation
+    title: Product Service API
+    description: API documentation for managing products
+    version: 1.0.0
+    path: /v3/api-docs
   swagger-ui:
-    enabled: true  # Enable Swagger UI
-    path: /swagger-ui  # Path to access the Swagger UI
-    config-url: /v3/api-docs  # URL to fetch the OpenAPI documentation for Swagger UI
+    enabled: true
+    path: /swagger-ui
+    config-url: /v3/api-docs

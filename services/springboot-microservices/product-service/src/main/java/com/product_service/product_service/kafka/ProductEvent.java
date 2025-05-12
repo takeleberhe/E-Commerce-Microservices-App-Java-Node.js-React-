@@ -1,18 +1,20 @@
-package com.order_service.order_service.kafka;
+package com.product_service.product_service.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderEvent {
-    private Long orderId;
+public class ProductEvent {
     private Long productId;
-    private int quantity;
-    private Double totalAmount;
+    private String name;
+    private String category;
+    private BigDecimal price;
     private String status;
 }

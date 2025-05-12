@@ -22,7 +22,6 @@
         <module>ConfigServer</module>
         <module>eureka-server</module>
         <module>api-gateway</module>
-        <module>services/nodejs-services/notification-service</module>
     </modules>
 
     <!-- Dependency Management -->

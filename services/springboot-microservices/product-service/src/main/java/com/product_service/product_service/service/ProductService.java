@@ -3,6 +3,8 @@ package com.product_service.product_service.service;
 import com.product_service.product_service.Dto.ProductDto;
 import com.product_service.product_service.entity.Product;
 import com.product_service.product_service.exception.ProductNotFoundException;
+import com.product_service.product_service.kafka.ProductEvent;
+import com.product_service.product_service.kafka.ProductProducer;
 import com.product_service.product_service.mapper.ProductMapper;
 import com.product_service.product_service.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,19 +16,32 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor // Generates a constructor with all required fields (final fields)
-@Slf4j // Generates a logger field with the name 'log'
+@RequiredArgsConstructor
+@Slf4j
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final ProductProducer productProducer; // Inject Kafka producer
 
     @Transactional
     public ProductDto createProduct(ProductDto productDto) {
-        log.info("Creating product: {}", productDto.getName());  // Use Lombok's logger
+        log.info("Creating product: {}", productDto.getName());
         Product product = productMapper.toEntity(productDto);
         Product savedProduct = productRepository.save(product);
-        return productMapper.toDto(savedProduct);
+        ProductDto savedDto = productMapper.toDto(savedProduct);
+
+        // Send Kafka event
+        ProductEvent event = ProductEvent.builder()
+                .productId(savedDto.getId())
+                .name(savedDto.getName())
+                .category(savedDto.getCategory())
+                .price(savedDto.getPrice())
+                .status("CREATED")
+                .build();
+        productProducer.sendProductEvent(event);
+
+        return savedDto;
     }
 
     public ProductDto getProductById(Long id) {
@@ -50,7 +65,6 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with ID: " + id));
 
-        // Update product fields from the DTO
         product.setName(productDto.getName());
         product.setDescription(productDto.getDescription());
         product.setPrice(productDto.getPrice());
@@ -59,7 +73,19 @@ public class ProductService {
         product.setImageUrl(productDto.getImageUrl());
 
         Product updatedProduct = productRepository.save(product);
-        return productMapper.toDto(updatedProduct);
+        ProductDto updatedDto = productMapper.toDto(updatedProduct);
+
+             // Send Kafka event
+        ProductEvent event = ProductEvent.builder()
+                .productId(updatedDto.getId())
+                .name(updatedDto.getName())
+                .category(updatedDto.getCategory())
+                .price(updatedDto.getPrice())
+                .status("UPDATED")
+                .build();
+        productProducer.sendProductEvent(event);
+
+        return updatedDto;
     }
 
     @Transactional
@@ -68,6 +94,16 @@ public class ProductService {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with ID: " + id));
         productRepository.delete(product);
+
+             // Send Kafka event
+        ProductEvent event = ProductEvent.builder()
+                .productId(product.getId())
+                .name(product.getName())
+                .category(product.getCategory())
+                .price(product.getPrice())
+                .status("DELETED")
+                .build();
+        productProducer.sendProductEvent(event);
     }
 
     public List<ProductDto> getAllProducts(int page, int size, String sort) {

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ProductService {
 
+     // constructor based injection using lombk
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
     private final ProductProducer productProducer; // Inject Kafka producer

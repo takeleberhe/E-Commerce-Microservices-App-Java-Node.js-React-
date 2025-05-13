@@ -1,6 +1,6 @@
 spring:
   application:
-    name: product-service # Name of the microservice; unique for Eureka and Config Server.
+    name: product-service # Name of the microservice; unique for Eureka service discovery and Config Server.
   cloud:
     config:
       uri: http://localhost:8080 # URL of the Config Server.

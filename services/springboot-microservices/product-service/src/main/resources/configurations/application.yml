@@ -27,12 +27,16 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
-  eureka:
-    client:
-      service-url:
-        defaultZone: http://localhost:8761/eureka/
-      fetch-registry: true
-      register-with-eureka: true
+kafka:
+  topic:
+    product-topic: product-events  # <-- This is the topic to which product-service will send messages
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
 
 springdoc:
   api-docs:

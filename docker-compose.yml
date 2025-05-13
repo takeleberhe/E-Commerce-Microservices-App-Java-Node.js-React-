@@ -28,7 +28,7 @@ services:
   # Spring Boot Product Service
   product-service:
     build:
-      context: ./services/spring-boot-microservices/product-service
+      context: ./services/springboot-microservices/product-service
       dockerfile: Dockerfile
     container_name: product-service
     ports:
@@ -46,7 +46,7 @@ services:
   # Spring Boot Order Service
   order-service:
     build:
-      context: ./services/spring-boot-microservices/order-service
+      context: ./services/springboot-microservices/order-service
       dockerfile: Dockerfile
     container_name: order-service
     ports:
@@ -65,7 +65,7 @@ services:
   # Node.js Notification Service
   notification-service:
     build:
-      context: ./services/nodejs-microservice/notification-service
+      context: ./services/nodejs-microservices/notification-service
       dockerfile: Dockerfile
     container_name: notification-service
     ports:
@@ -90,7 +90,7 @@ services:
   # Auth Service
   auth-service:
     build:
-      context: ./services/spring-boot-microservices/auth-service
+      context: ./services/springboot-microservices/auth-service
       dockerfile: Dockerfile
     container_name: auth-service
     ports:

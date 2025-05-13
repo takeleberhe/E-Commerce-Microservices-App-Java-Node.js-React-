@@ -22,7 +22,7 @@ public class PaymentService {
      * @throws PaymentProcessingException if the payment fails.
      */
     public String processPayment(String gateway, PaymentRequest paymentRequest) throws PaymentProcessingException {
-        // Fetch the appropriate payment gateway from the factory bean b/c it all beans stripe beans
+        // Fetch the appropriate payment gateway from the factory
         var paymentGateway = paymentGatewayFactory.getPaymentGateway(gateway);
 
         if (paymentGateway == null) {

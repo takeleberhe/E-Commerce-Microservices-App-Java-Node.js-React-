@@ -10,10 +10,10 @@ public interface UserMapper {
 
     // Create a static instance of the mapper
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-
     // Convert UserDTO to User entity
     User userDTOToUser(UserDTO userDTO);
 
     // Convert User entity to UserDTO
     UserDTO userToUserDTO(User user);
+    
 }

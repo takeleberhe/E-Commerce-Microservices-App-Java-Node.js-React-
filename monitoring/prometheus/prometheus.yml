@@ -2,18 +2,18 @@ global:
   scrape_interval: 15s # How often to scrape(Fetch or monitore or record data of the service) targets by default.
 
 scrape_configs:
-  - job_name: 'spring-boot-services'
+  - job_name: 'springboot-microservices'
     metrics_path: '/actuator/prometheus'
     static_configs:
       - targets:
           - 'product-service:8080'
           - 'order-service:8081'
 
-  - job_name: 'nodejs-services'
+  - job_name: 'nodejs-microservices'
     metrics_path: '/metrics'
     static_configs:
       - targets:
-          - 'order-service:3000'
+          - 'notification-service:3000'
 
   - job_name: 'prometheus'
     static_configs:

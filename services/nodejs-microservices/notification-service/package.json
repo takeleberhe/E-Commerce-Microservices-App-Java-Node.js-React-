@@ -1,16 +1,20 @@
 {
   "name": "notification-service",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "dist/index.js",               // Main entry point after build (JS output)
+  "type": "module",                      // Enables ESModules (import/export)
   "scripts": {
-    "start": "node dist/index.js",
-    "dev": "ts-node-dev src/index.ts",
-    "build": "tsc"
+    "start": "node dist/index.js",       // Start with compiled JS
+    "dev": "ts-node-esm src/index.ts",   // Run with ts-node in ESM mode
+    "build": "tsc",                      // TypeScript compiler to build project
+    "lint": "eslint . --ext .ts",        // Run ESLint on TypeScript files
+    "lint:fix": "eslint . --ext .ts --fix", // Automatically fix lint issues
+    "format": "prettier --write ."       // Format with Prettier
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
+  "description": "Notification Service using Express, Kafka, and TypeScript",
   "dependencies": {
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
@@ -38,8 +42,9 @@
     "eslint-plugin-prettier": "^5.4.0",
     "globals": "^16.1.0",
     "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.7.2",
+    "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1"
   }
 }

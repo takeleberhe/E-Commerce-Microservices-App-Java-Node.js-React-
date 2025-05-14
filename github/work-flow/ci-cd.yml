@@ -16,11 +16,11 @@ jobs:
       matrix:
         service:
           - react-app
-          - nodejs-services/notificationservice
-          - nodejs-services/userservice
-          - spring-boot-services/paymentservice
-          - spring-boot-services/orderservice
-          - spring-boot-services/productservice
+          - nodejs-microservices/notification-service
+          - nodejs-microservices/shiping-service
+          - springboot-microservices/payment-service
+          - springboot-microservices/order-service
+          - springboot-microservices/product-service
     steps:
       - name: Checkout code
         uses: actions/checkout@v3 # Fetch the code from the GitHub repository
@@ -48,12 +48,12 @@ jobs:
     strategy:
       matrix:
         service:
-          - react-app
-          - notificationservice
-          - userservice
-          - paymentservice
-          - orderservice
-          - productservice
+          - UI
+          - notification-service
+          - auth-service
+          - payment-service
+          - order-service
+          - product-service
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -63,7 +63,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1 # Set your AWS region
+          aws-region: us-east-1
 
       - name: Deploy ${{ matrix.service }} to ECS
         run: |

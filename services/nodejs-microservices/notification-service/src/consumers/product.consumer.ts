@@ -8,7 +8,7 @@ export const consumeProductMessages = async () => {
   await consumer.run({
     eachMessage: async ({ topic, partition, message }) => {
       const data = JSON.parse(message.value!.toString());
-      console.log("📦 Received product event:", data);
+      console.log("Received product event:", data);
 
       await Notification.create({
         type: "PRODUCT",
